@@ -4,12 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=chrome" />
-    <title>Canvas tutorial</title>
+    <title>Slope-intercept Experience MVP</title>
 
     <script type="application/javascript" src="app.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body onload="draw();">
-    <canvas id="canvas" width="500" height="500"></canvas>
+  <body onload="drawDefault();">
+    <h1>Slope-intercept Formula: y = mx + b</h1>
+    <canvas
+      id="graph"
+      width="800"
+      height="800"
+      style="object-fit: contain"
+    ></canvas>
+    <!-- FIX ACTION LATER -->
+    <input type="number" id="slope" onkeyup="handleSlopeInput()" required />
+    <input
+      type="number"
+      id="yIntercept"
+      onkeyup="handleYInterceptInput()"
+      required
+    />
   </body>
 </html>

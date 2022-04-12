@@ -1,53 +1,78 @@
-function draw() {
-  var canvas = document.getElementById("canvas");
-  if (canvas.getContext) {
-    var ctx = canvas.getContext("2d");
+const GRAPH_DIMENSION = 800;
+const QUADRANT_DIMENSION = GRAPH_DIMENSION / 2;
+const QUADRANT_BOXES = 15;
+const GRID_BOX_DIMENSION = QUADRANT_DIMENSION / QUADRANT_BOXES;
+let slope = 1;
+let yIntercept = 3 * GRID_BOX_DIMENSION;
+let emptyGraphCanvas = null;
 
-    // ctx.fillStyle = "rgb(200, 0, 0)";
-    // // Filled triangle
-    // ctx.beginPath();
-    // ctx.moveTo(25, 25);
-    // ctx.lineTo(105, 25);
-    // ctx.lineTo(25, 105);
-    // ctx.fill();
+function drawDefault() {
+  drawCoordinatePlane();
+  drawLine();
+}
 
-    // // Stroked triangle
-    // ctx.beginPath();
-    // ctx.moveTo(125, 125);
-    // ctx.lineTo(125, 45);
-    // ctx.lineTo(45, 125);
-    // ctx.closePath();
-    // ctx.stroke();
+function drawCoordinatePlane() {
+  var graph = document.getElementById("graph");
+  if (!graph.getContext) return;
+  /** @type {CanvasRenderingContext2D} */
+  var ctx = graph.getContext("2d");
 
-    // ctx.fillStyle = "rgb(0, 0, 0)";
-    // ctx.beginPath();
-    // ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
-    // ctx.moveTo(110, 75);
-    // ctx.arc(75, 75, 35, 0, Math.PI, false); // Mouth (clockwise)
-    // ctx.moveTo(65, 65);
-    // ctx.arc(60, 65, 5, 0, Math.PI * 2, true); // Left eye
-    // ctx.moveTo(95, 65);
-    // ctx.arc(90, 65, 5, 0, Math.PI * 2, true); // Right eye
-    // ctx.stroke();
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(QUADRANT_DIMENSION, 0);
+  ctx.lineTo(QUADRANT_DIMENSION, GRAPH_DIMENSION);
+  ctx.stroke();
 
-    for (var i = 0; i < 4; i++) {
-      for (var j = 0; j < 3; j++) {
-        ctx.beginPath();
-        var x = 25 + j * 50; // x coordinate
-        var y = 25 + i * 50; // y coordinate
-        var radius = 20; // Arc radius
-        var startAngle = 0; // Starting point on circle
-        var endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
-        var counterclockwise = i % 2 !== 0; // clockwise or counterclockwise
+  ctx.beginPath();
+  ctx.moveTo(0, QUADRANT_DIMENSION);
+  ctx.lineTo(GRAPH_DIMENSION, QUADRANT_DIMENSION);
+  ctx.stroke();
 
-        ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
+  ctx.lineWidth = 1;
+  for (let line = 0; line < GRAPH_DIMENSION; line += GRID_BOX_DIMENSION) {
+    ctx.beginPath();
+    ctx.moveTo(0, line);
+    ctx.lineTo(GRAPH_DIMENSION, line);
+    ctx.stroke();
 
-        if (i > 1) {
-          ctx.fill();
-        } else {
-          ctx.stroke();
-        }
-      }
-    }
+    ctx.beginPath();
+    ctx.moveTo(line, 0);
+    ctx.lineTo(line, GRAPH_DIMENSION);
+    ctx.stroke();
   }
+
+  emptyGraphCanvas = ctx.getImageData(0, 0, GRAPH_DIMENSION, GRAPH_DIMENSION);
+}
+
+function drawLine() {
+  var graph = document.getElementById("graph");
+  if (!graph.getContext) return;
+
+  /** @type {CanvasRenderingContext2D} */
+  var ctx = graph.getContext("2d");
+  ctx.putImageData(emptyGraphCanvas, 0, 0);
+
+  ctx.strokeStyle = "red";
+  console.log("apple");
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(
+    0,
+    QUADRANT_DIMENSION - (slope * -QUADRANT_DIMENSION + yIntercept)
+  );
+  ctx.lineTo(
+    GRAPH_DIMENSION,
+    QUADRANT_DIMENSION - (slope * QUADRANT_DIMENSION + yIntercept)
+  );
+  ctx.stroke();
+}
+
+function handleSlopeInput() {
+  slope = document.getElementById("slope").value;
+  drawLine();
+}
+
+function handleYInterceptInput() {
+  yIntercept = document.getElementById("yIntercept").value * GRID_BOX_DIMENSION;
+  drawLine();
 }
