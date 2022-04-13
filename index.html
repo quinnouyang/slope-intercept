@@ -7,23 +7,78 @@
     <title>Slope-intercept Experience MVP</title>
 
     <script type="application/javascript" src="app.js"></script>
+
+    <!-- KaTex for equations, etc. -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css"
+      integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB"
+      crossorigin="anonymous"
+    />
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+      integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js"
+      integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+      crossorigin="anonymous"
+      onload="renderMathInElement(document.body);"
+    ></script>
+
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body onload="drawDefault();">
-    <h1>Slope-intercept Formula: y = mx + b</h1>
-    <canvas
-      id="graph"
-      width="800"
-      height="800"
-      style="object-fit: contain"
-    ></canvas>
-    <!-- FIX ACTION LATER -->
-    <input type="number" id="slope" onkeyup="handleSlopeInput()" required />
-    <input
-      type="number"
-      id="yIntercept"
-      onkeyup="handleYInterceptInput()"
-      required
-    />
+  <body onload="drawDefault();" style="display: flex">
+    <div style="margin-top: 5%; margin-left: 5%; flex: 0 0 40%">
+      <h1 id="title" style="text-align: center">
+        Slope-intercept Formula: \(y=mx+b\)
+      </h1>
+
+      <h5 id="description">
+        The classic slope-intercept formula: it defines itself! There are two
+        constants that you can "control": the slope \(m\) and the
+        \(y\)-intercept \((0, b)\).
+        <br /><br />
+        The \(x\) and \(y\) variables are numbers "bound" by these constants.
+        It's easier to interpret \(x\) as an "input" and \(y\) as an "output,"
+        which is why you sometimes see this equation as a function: \(f(x) = mx
+        + b\).
+        <br /><br />
+        Take any number and set \(x\) equal to it in the formula. As you've
+        already defined the slope and y-intercept, you can calculate the
+        remaining variable: \(y\).
+        <br /><br />
+        The slope is traditionally called the "rate of change" or described as
+        "rise over run." It indicates how much the \(y\)-value changes for every
+        unit increase in the \(x\)-value. The y-intercept is the \(y\)-value
+        that you get from plugging in \(x=0\) and where the line crosses the
+        \(y\)-axis (where \(x=0\)).
+        <br /><br />
+        Graphing this equation on a coordinate plane shows a linear line that
+        maps all the possible \(x\)-values to the \(y\)-values. Try plugging in
+        \(x\)-values yourself and notice how the \(y\)-values match what the
+        formula gives!
+      </h5>
+
+      <h3 id="equation" style="text-align: center"></h3>
+
+      <div>
+        <h4>Slope, \(m\):</h4>
+        <input type="number" id="slope" onkeyup="handleInput()" />
+      </div>
+      <div>
+        <h4>Y-intercept (\(y\)-value), \(b\):</h4>
+        <input type="number" id="yIntercept" onkeyup="handleInput()" />
+      </div>
+    </div>
+    <canvas id="graph" style="margin: 5%; border: 2px solid black"></canvas>
+    <!-- style="object-fit: contain" -->
   </body>
 </html>
